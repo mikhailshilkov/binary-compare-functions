@@ -6,20 +6,20 @@ namespace BinaryDiff
 
     public static class BinaryComparer
     {
-        public static BinaryComparisonResult Compare(byte[] leftBinary, byte[] rightBinary)
+        public static IBinaryComparisonResult Compare(byte[] leftBinary, byte[] rightBinary)
         {
             if (leftBinary == null) throw new ArgumentNullException(nameof(leftBinary));
             if (rightBinary == null) throw new ArgumentNullException(nameof(rightBinary));
 
             if (leftBinary.Length != rightBinary.Length)
             {
-                return BinaryComparisonResult.DifferentSize;
+                return new BinariesOfDifferentSize();
             }
 
             var differences = FindDifferences(leftBinary, rightBinary).ToArray();
             return differences.Any() 
-                ? BinaryComparisonResult.Different(differences) 
-                : BinaryComparisonResult.Equal;
+                ? (IBinaryComparisonResult)new BinariesHaveDifferences(differences) 
+                : new BinariesAreEqual();
         }
 
         private static IEnumerable<Difference> FindDifferences(byte[] leftBinary, byte[] rightBinary)

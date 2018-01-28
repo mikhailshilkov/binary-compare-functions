@@ -22,7 +22,7 @@
             var binary1 = new byte[0];
             var binary2 = new byte[0];
             var result = BinaryComparer.Compare(binary1, binary2);
-            result.ShouldBeEquivalentTo(BinaryComparisonResult.Equal);
+            result.Should().BeOfType<BinariesAreEqual>();
         }
 
         [Test]
@@ -31,14 +31,14 @@
             var binary1 = new byte[] { 1, 5, 9, 0 };
             var binary2 = binary1.ToArray();
             var result = BinaryComparer.Compare(binary1, binary2);
-            result.ShouldBeEquivalentTo(BinaryComparisonResult.Equal);
+            result.Should().BeOfType<BinariesAreEqual>();
         }
 
         [TestCaseSource(nameof(DifferentLengths))]
         public void Compare_ArraysOfDifferentLength_ReportedAsOfDifferentSize(byte[] binary1, byte[] binary2)
         {
             var result = BinaryComparer.Compare(binary1, binary2);
-            result.ShouldBeEquivalentTo(BinaryComparisonResult.DifferentSize);
+            result.Should().BeOfType<BinariesOfDifferentSize>();
         }
 
         private static object[] DifferentLengths =
@@ -53,7 +53,8 @@
             (byte[] binary1, byte[] binary2, Difference[] differences)
         {
             var result = BinaryComparer.Compare(binary1, binary2);
-            result.ShouldBeEquivalentTo(BinaryComparisonResult.Different(differences));
+            result.Should().BeOfType<BinariesHaveDifferences>()
+                .Which.Differences.ShouldBeEquivalentTo(differences);
         }
 
         private static object[] DifferentArraysOfSameLength =

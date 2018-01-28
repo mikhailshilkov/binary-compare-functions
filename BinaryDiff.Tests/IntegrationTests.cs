@@ -9,6 +9,7 @@
     using Newtonsoft.Json;
     using NUnit.Framework;
 
+    // Requires Function App to be running locally
     [TestFixture]
     public class IntegrationTests
     {
@@ -30,25 +31,12 @@
             var diff = await GetAsync($"{baseUrl}/diff/{id}");
 
             // Assert
-            diff.result.Should().Be("different");
-            diff.differences.ShouldBeEquivalentTo(new[]
+            diff.Result.Should().Be("different");
+            diff.Differences.ShouldBeEquivalentTo(new[]
             {
-                new { startIndex = 0, length = 1 },
-                new { startIndex = 3, length = 2 }
+                new Difference(startIndex: 0, length: 1),
+                new Difference(startIndex: 3, length: 2)
             });
-        }
-
-        private class ExpectedResult
-        {
-            public string result { get; set; }
-
-            public ExpectedResultDiff[] differences { get; set; }
-
-            public class ExpectedResultDiff 
-            {
-                public int startIndex { get; set; }
-                public int length { get; set; }
-            }
         }
 
         private static async Task PutAsync(string url, object body)
@@ -60,12 +48,12 @@
             uploadLeftResponse.EnsureSuccessStatusCode();
         }
 
-        private static async Task<ExpectedResult> GetAsync(string url)
+        private static async Task<BinariesHaveDifferences> GetAsync(string url)
         {
             var response = await client.GetAsync(url);
             response.EnsureSuccessStatusCode();
             var contentString = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ExpectedResult>(contentString);
+            return JsonConvert.DeserializeObject<BinariesHaveDifferences>(contentString);
         }
 
         private const string id = "INTEGRATION_TEST";

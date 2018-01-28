@@ -14,6 +14,7 @@ namespace BinaryDiff
         }
 
         public int StartIndex { get; }
+        
         public int Length { get; }
     }
 }

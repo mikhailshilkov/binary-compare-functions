@@ -54,7 +54,7 @@
             var request = new DefaultHttpContext().Request;
             var binary1 = new byte[] { 1, 2, 3 };
             var binary2 = new byte[] { 4, 5, 6 };
-            var expected = BinaryComparisonResult.Different(
+            var expected = new BinariesHaveDifferences(
                 new[] { new Difference(0, 1), new Difference(5, 2) });
             Functions.Comparer = (b1, b2) => 
                 b1 == binary1 && b2 == binary2 

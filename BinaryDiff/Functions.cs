@@ -58,6 +58,6 @@
         // Azure Functions don't support traditional Dependency Injection yet,
         // so I made Comparer set-able for unit test via this static property,
         // while the actual Function App won't ever change it
-        public static Func<byte[], byte[], BinaryComparisonResult> Comparer { get; set; } = BinaryComparer.Compare;
+        public static Func<byte[], byte[], IBinaryComparisonResult> Comparer { get; set; } = BinaryComparer.Compare;
     }
 }
