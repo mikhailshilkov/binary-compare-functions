@@ -34,13 +34,11 @@ base URL.
   
 *  **URL Params**
 
-   **Required:**
- 
-   `id=[integer]` - difference ID that you pick, to be used when requesting the difference
+   `id=[string]` - difference ID that you pick, to be used when requesting the difference
 
 * **Content**
 
-  `{ "data": "base64 encoded binary" }` 
+  `{ "data": "<base64 encoded binary>" }` 
 
 * **Success Response:**
 
@@ -55,6 +53,7 @@ base URL.
   OR
 
   * **Code:** 400 BAD REQUEST <br />
+    Missing or invalid `data` parameter in the request body <br />
     **Content:** `"Reason explaining why the request was not valid"`
 
 * **Sample HTTP Request:**
@@ -81,17 +80,15 @@ base URL.
   
 *  **URL Params**
 
-   **Required:**
- 
-   `id=[integer]` - difference ID, which was used to upload the two binaries to compare
+   `id=[string]` - difference ID, which was used to upload the two binaries to compare
 
 * **Success Response:**
 
   * **Code:** 200 <br />
-    Comparison is successful <br />
-    **Content when binaries are exactly the same:** <br /> `{"result":"same"}` <br />
-    **Content when binaries have different length:** <br /> `{"result":"size-differs"}` <br />
-    **Content when binaries have the same length but some differences exist:** 
+    Comparison is successful <br /> <br />
+    **Content when binaries are exactly the same:** <br /> `{"result":"same"}` <br /> <br />
+    **Content when binaries have different length:** <br /> `{"result":"size-differs"}` <br /> <br />
+    **Content when binaries have the same length but some differences exist (example):** 
     ```
     { 
       "result":"different", 
@@ -125,3 +122,6 @@ base URL.
 - `cd BinaryDiff` then `func start --script-root bin\\debug\\netstandard2.0\\publish` to start Function App locally
 - `dotnet test 'BinaryDiff.Tests\\BinaryDiff.Tests.csproj'` to run tests (Integration Test required Function
 App to be running)
+
+If you are using Visual Studio Code, it has predefined commands for running Function App and Tests
+directly in editor's console.
